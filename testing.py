@@ -24,11 +24,19 @@ def make_chains(text_string):
     chains = {}
     words = text_string.split()
     for counter in range(len(words)-2):
-        bi_gram = (words[counter], words[counter + 1])
-        chains[bi_gram] = chains.get(bi_gram, []) + [words[counter + 2]]
-    print chains
+        first_word = words[counter]
+        second_word = words[counter + 1]
+        bi_gram = (first_word, second_word)
+        # check if we've already added this bigram as a key in the chains dict
+        third_words = chains.get(bi_gram, [])
+        if third_words == []:  # if list of third words is empty
+            chains[bi_gram] = [words[counter + 2]]
+            # adds new key-value pair to chains dictionary
+        else:
+            third_words.append(words[counter + 2])
+            # append word after n-gram word to list
+
+    return chains
 
 all_text = open_and_read_file("green-eggs.txt")
 chains_dict = make_chains(all_text)
-
-print chains_dict
