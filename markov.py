@@ -1,5 +1,4 @@
 from random import choice
-# open_and_read_file("green-eggs.txt")
 
 
 def open_and_read_file(file_path):
@@ -45,18 +44,27 @@ def make_chains(text_string):
 
 def make_text(chains):
     """Takes dictionary of markov chains; returns random text."""
-    first_bi_gram = choice(markov_chains.keys())
-    first_third_word = choice(chains[first_bi_gram])
-    link = str(first_bi_gram[0]) + " " + str(first_bi_gram[1]) + " " + first_third_word
-    print link
+    # chooses first bi-gram from chains dictionary
+    bi_gram = choice(markov_chains.keys())
+    # chooses the next word randomly from that bi-gram's value (which is a list)
+    third_word = choice(chains[bi_gram])
+    # Stores first word in the bi-gram, second word in the bi-gram, and randomly
+    # chosen third word as the beginning of our new text
+    text = bi_gram[0] + " " + bi_gram[1] + " " + third_word
+    # Loops through bi_grams produced in this way until creating a bi_gram that
+    # is not in the dictionary
+    while chains.get((bi_gram[1], third_word), 0) != 0:
+        # Create new bi_gram from 2nd word in previous one and previous third
+        # word
+        bi_gram = (bi_gram[1], third_word)
+        # Choose new third word randomly from value for bi_gram in dictionary
+        third_word = choice(chains[bi_gram])
+        # Add bi_gram and third word to stored text
+        text = text + " " + third_word
 
-    third_words_list = chains[(first_bi_gram[1], first_third_word)]
-    print third_words_list
+    print text
 
-    #random_word = choice(chains[(first_third_word, link_word)])
-    # choose random value from the list that is the value for (first_third_word + link_word)
-    #print random_word
-
-all_text = open_and_read_file("green-eggs.txt")    # return text
+# Replace with name of your file
+all_text = open_and_read_file("gettysburg.txt")
 markov_chains = make_chains(all_text)
 make_text(markov_chains)
