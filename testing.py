@@ -36,7 +36,7 @@ def make_chains(text_string):
             third_words.append(words[counter + 2])
             # append word after n-gram word to list
 
-    return chains
+    print chains
 
 all_text = open_and_read_file("green-eggs.txt")
 chains_dict = make_chains(all_text)
